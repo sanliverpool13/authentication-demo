@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "tailwindcss";
+
+:root {
+  --color-avocado-100: rgb(56, 148, 65);
+  --color-border-grey: #b3b3b3;
+  --color-error-light: #e20808;
+  --color-error-dark: #ff6669;
+
+  --w-inputs-and-button: 400px;
+  --color-black-hover: hsl(179, 100%, 50%);
+}
+
+@theme {
+  --color-avocado-100: rgb(56, 148, 65);
+  --color-border-grey: #b3b3b3;
+  --color-error-light: var(--color-error-light);
+  --color-error-dark: var(--color-error-dark);
+
+  --w-inputs-and-button: 400px;
+  --color-black-hover: hsl(179, 100, 0);
+}
+
+:root {
+  --width-inputs-and-buttons: 400px;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
