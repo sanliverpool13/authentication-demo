@@ -9,8 +9,11 @@ import {
   validateLoginEmail,
   validateLoginPassword,
 } from "../helpers/validation";
+import { login } from "../api/authentication";
+import { useNavigate } from "react-router";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
     password: "",
@@ -33,8 +36,7 @@ const LoginForm = () => {
     setErrors(newErrors);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    console.log("handle login submit");
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newErrors = {
@@ -43,12 +45,23 @@ const LoginForm = () => {
       password: validateLoginPassword(formData.password),
     };
 
-    console.log("new errors", newErrors);
-
     setErrors(newErrors);
 
     if (newErrors.email || newErrors.password) {
       return;
+    }
+
+    const { email, password } = formData;
+    try {
+      await login(email, password);
+
+      navigate("/loggedin");
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrors({ ...errors, password: error.message });
+      } else {
+        setErrors({ ...errors, password: "An unknown error occurred" });
+      }
     }
   };
 

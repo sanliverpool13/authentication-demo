@@ -10,8 +10,11 @@ import {
   validateEmail,
   validatePassword,
 } from "../helpers/validation";
+import { signUp } from "../api/authentication";
+import { useNavigate } from "react-router";
 
 const SignupForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
     password: "",
@@ -34,20 +37,32 @@ const SignupForm = () => {
     setErrors(newErrors);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    console.log("handle submit");
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const { email, password } = formData;
+
     const newErrors: FormDataType = {
-      email: validateEmail(formData.email),
-      password: "",
+      email: validateEmail(email),
+      password: validatePassword(password),
     };
 
     setErrors(newErrors);
 
     // Check if there are no errors
-    if (!newErrors.email && !newErrors.password) {
-      console.log("Form submitted successfully:", formData);
+    if (newErrors.email || newErrors.password) {
+      return;
+    }
+
+    try {
+      await signUp(email, password);
+      navigate("/registered");
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrors({ ...errors, password: error.message });
+      } else {
+        setErrors({ ...errors, password: "An unknown error occurred" });
+      }
     }
   };
 
