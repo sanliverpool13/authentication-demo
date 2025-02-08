@@ -59,6 +59,6 @@ export const evaluatePasswordStrength = (password: string): number => {
   if (/[^A-Za-z0-9]/.test(password)) strength++; // Special characters
 
   if (strength <= 1) return 0; // Too Weak
-  if (strength === 2 || strength === 3) return 1; // Medium
+  if (strength >= 2 && strength <= 4) return 1; // Medium
   return 2; // Strong
 };

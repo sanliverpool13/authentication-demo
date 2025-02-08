@@ -8,7 +8,7 @@ const LoggedIn = () => {
     <AuthCard>
       <Title text="Wow you are logged in!" />
       <Explanation text="This is a mock authentication app. Thanks for logging in. To test sign up and login again, please click to log out below." />
-      <RedirectText text="Logout" to="/" underline />
+      <RedirectText text="Logout" to="/" underline alignRight={false} />
     </AuthCard>
   );
 };

@@ -10,7 +10,13 @@ const AuthRedirect = ({ text, linkText, linkTo }: AuthRedirectProps) => {
   return (
     <div className="flex justify-center items-center">
       <p className="text-base font-normal">
-        {text} <RedirectText text={linkText} to={linkTo} underline={true} />
+        {text}{" "}
+        <RedirectText
+          text={linkText}
+          to={linkTo}
+          underline={true}
+          alignRight={false}
+        />
       </p>
     </div>
   );

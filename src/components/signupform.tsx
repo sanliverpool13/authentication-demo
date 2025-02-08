@@ -54,7 +54,6 @@ const SignupForm = () => {
       email: validateEmail(email),
       password: validatePassword(password),
     };
-    console.log(newErrors);
 
     // Check if there are no errors
     if (newErrors.email || newErrors.password) {
