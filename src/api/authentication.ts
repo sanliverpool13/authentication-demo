@@ -23,7 +23,6 @@ export const signUp = async (email: string, password: string) => {
     const error = await response.json();
     throw new Error(error.message);
   }
-  console.log("response", response);
   return response.json();
 };
 
