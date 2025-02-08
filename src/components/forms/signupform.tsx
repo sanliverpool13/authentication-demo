@@ -1,19 +1,20 @@
 import React from "react";
 import { useState } from "react";
-import Label from "./label";
-import Input from "./input";
-import { FormDataType } from "../types";
-import ErrorMessage from "./ErrorMessage";
-import Button from "./button";
+import Label from "../input/label";
+import { FormDataType } from "../../types";
+import ErrorMessage from "../input/ErrorMessage";
+import Button from "../layout/button";
 import {
   evaluatePasswordStrength,
   validateEmail,
   validatePassword,
-} from "../helpers/validation";
-import { signUp } from "../api/authentication";
+} from "../../helpers/validation";
+import { signUp } from "../../api/authentication";
 import { useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import PasswordStrength from "./passwordstrength";
+import PasswordStrength from "../input/passwordstrength";
+import TextInput from "../input/TextInput";
+import PasswordInput from "../input/PasswordInput";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -96,18 +97,18 @@ const SignupForm = () => {
           <div className="flex w-full">
             <Label text="Email" htmlFor="email" />
           </div>
-          <Input
-            placeholder="m@example.com"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+          <TextInput
+            fields={{
+              placeholder: "m@example.com",
+              type: "email",
+              id: "email",
+              name: "email",
+              value: formData.email,
+              onChange: (e) =>
+                setFormData({ ...formData, email: e.target.value }),
+              onBlur: () => handleBlur("email"),
+            }}
             error={!!errors.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            onBlur={() => handleBlur("email")}
-            isPassword={false}
           />
           {errors.email && <ErrorMessage message={errors.email} />}
         </div>
@@ -118,16 +119,18 @@ const SignupForm = () => {
           </div>
 
           <div className="flex items-center w-full border border-border-grey rounded-md focus-within:ring-2 focus-within:ring-blue-500 pointer-events-none">
-            <Input
-              placeholder=""
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              value={formData.password}
-              error={!!errors.password}
-              onBlur={() => handleBlur("password")}
-              onChange={handlePasswordChange}
-              isPassword={true}
+            <PasswordInput
+              fields={{
+                placeholder: "",
+                type: showPassword ? "text" : "password",
+                id: "password",
+                name: "password",
+                value: formData.password,
+                onBlur: () => handleBlur("password"),
+                onChange: handlePasswordChange,
+              }}
+              // error={!!errors.password}
+              // isLogin={false}
             />
             {formData.password.length > 0 && (
               <button

@@ -1,20 +1,20 @@
 import { useState } from "react";
-import Label from "./label";
-import Input from "./input";
-import { FormDataType } from "../types";
-import ErrorMessage from "./ErrorMessage";
-import RedirectText from "./RedirectText";
-import Button from "./button";
-import {
-  validateLoginEmail,
-  validateLoginPassword,
-} from "../helpers/validation";
-import { login } from "../api/authentication";
+import TextInput from "../input/TextInput";
+import Label from "../input/label";
+import { FormDataType } from "../../types";
+import ErrorMessage from "../input/ErrorMessage";
+import RedirectText from "../layout/RedirectText";
+import Button from "../layout/button";
+import { validateLoginEmail } from "../../helpers/validation";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import PasswordInput from "../input/PasswordInput";
+import { login } from "../../api/authentication";
 import { useNavigate } from "react-router";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [animate, setAnimate] = useState(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
@@ -31,8 +31,6 @@ const LoginForm = () => {
 
     if (field === "email") {
       newErrors.email = validateLoginEmail(formData.email);
-    } else if (field === "password") {
-      newErrors.password = validateLoginPassword(formData.password);
     }
 
     setErrors(newErrors);
@@ -45,10 +43,9 @@ const LoginForm = () => {
     const newErrors = {
       ...errors,
       email: validateLoginEmail(formData.email),
-      password: validateLoginPassword(formData.password),
     };
 
-    if (newErrors.email || newErrors.password) {
+    if (newErrors.email) {
       setAnimate(true);
       setTimeout(() => setAnimate(false), 1000);
       setLoading(false);
@@ -71,6 +68,10 @@ const LoginForm = () => {
     setLoading(false);
   };
 
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, password: e.target.value });
+  };
+
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
       {/* Input Section */}
@@ -80,18 +81,18 @@ const LoginForm = () => {
           <div className="flex w-full">
             <Label text="Email" htmlFor="email" />
           </div>
-          <Input
-            placeholder="m@example.com"
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            onBlur={() => handleBlur("email")}
+          <TextInput
+            fields={{
+              placeholder: "m@example.com",
+              type: "email",
+              id: "email",
+              name: "email",
+              value: formData.email,
+              onChange: (e) =>
+                setFormData({ ...formData, email: e.target.value }),
+              onBlur: () => handleBlur("email"),
+            }}
             error={!!errors.email}
-            isPassword={false}
           />
           {errors.email && <ErrorMessage message={errors.email} />}
         </div>
@@ -108,19 +109,30 @@ const LoginForm = () => {
               alignRight={true}
             />
           </div>
-          <Input
-            placeholder=""
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-            onBlur={() => handleBlur("password")}
-            error={!!errors.password}
-            isPassword={false}
-          />
+          <div className="flex items-center w-full border border-border-grey rounded-md focus-within:ring-2 focus-within:ring-blue-500 pointer-events-none">
+            <PasswordInput
+              fields={{
+                placeholder: "",
+                type: showPassword ? "text" : "password",
+                id: "password",
+                name: "password",
+                value: formData.password,
+                onBlur: () => handleBlur("password"),
+                onChange: handlePasswordChange,
+              }}
+              // error={!!errors.password}
+              // isLogin={false}
+            />
+            {formData.password.length > 0 && (
+              <button
+                type="button"
+                className="pr-2.5 h-10 pointer-events-auto cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            )}
+          </div>
           {errors.password && <ErrorMessage message={errors.password} />}
         </div>
       </div>

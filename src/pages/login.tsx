@@ -1,7 +1,7 @@
-import AuthCard from "../components/authcard";
-import Title from "../components/title";
-import LoginForm from "../components/loginform";
-import AuthRedirect from "../components/authredirect";
+import AuthCard from "../components/layout/authcard";
+import Title from "../components/layout/title";
+import LoginForm from "../components/forms/loginform";
+import AuthRedirect from "../components/layout/authredirect";
 
 const Login = () => {
   return (

@@ -1,7 +1,7 @@
-import AuthCard from "../components/authcard";
-import Title from "../components/title";
-import Explanation from "../components/explanation";
-import ResetForm from "../components/resetform";
+import AuthCard from "../components/layout/authcard";
+import Title from "../components/layout/title";
+import Explanation from "../components/layout/explanation";
+import ResetForm from "../components/forms/resetform";
 
 const ForgotPassword = () => {
   return (

@@ -1,13 +1,13 @@
 import { useState } from "react";
-import Label from "./label";
-import Input from "./input";
-import Button from "./button";
-import RedirectText from "./RedirectText";
-import AuthRedirect from "./authredirect";
-import ErrorMessage from "./ErrorMessage";
-import { validateLoginEmail } from "../helpers/validation";
-import { resetpassword } from "../api/authentication";
+import Label from "../input/label";
+import Button from "../layout/button";
+import RedirectText from "../layout/RedirectText";
+import AuthRedirect from "../layout/authredirect";
+import ErrorMessage from "../input/ErrorMessage";
+import { validateLoginEmail } from "../../helpers/validation";
+import { resetpassword } from "../../api/authentication";
 import { useNavigate } from "react-router";
+import TextInput from "../input/TextInput";
 
 const ResetForm = () => {
   const navigate = useNavigate();
@@ -47,16 +47,17 @@ const ResetForm = () => {
     <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2">
         <Label text="Email" htmlFor="email" />
-        <Input
-          placeholder="m@example.com"
-          type="email"
-          id="email"
-          name="email"
-          value={email}
+        <TextInput
+          fields={{
+            placeholder: "m@example.com",
+            type: "email",
+            id: "email",
+            name: "email",
+            value: email,
+            onChange: (e) => setEmail(e.target.value),
+            onBlur: () => {},
+          }}
           error={!!error}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={() => {}}
-          isPassword={false}
         />
         {error && <ErrorMessage message={error} />}
       </div>

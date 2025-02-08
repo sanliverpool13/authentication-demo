@@ -1,7 +1,7 @@
-import AuthCard from "../components/authcard";
-import AuthRedirect from "../components/authredirect";
-import SignupForm from "../components/signupform";
-import Title from "../components/title";
+import AuthCard from "../components/layout/authcard";
+import AuthRedirect from "../components/layout/authredirect";
+import SignupForm from "../components/forms/signupform";
+import Title from "../components/layout/title";
 
 const Register = () => {
   return (

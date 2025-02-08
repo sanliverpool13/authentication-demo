@@ -1,7 +1,7 @@
-import Title from "../components/title";
-import Explanation from "../components/explanation";
-import RedirectText from "../components/RedirectText";
-import AuthCard from "../components/authcard";
+import Title from "../components/layout/title";
+import Explanation from "../components/layout/explanation";
+import RedirectText from "../components/layout/RedirectText";
+import AuthCard from "../components/layout/authcard";
 
 const ResetSuccess = () => {
   return (
