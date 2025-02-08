@@ -9,6 +9,7 @@ interface InputProps {
   error: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: FocusEvent<HTMLInputElement>) => void;
+  isPassword: boolean;
 }
 
 const Input = ({
@@ -20,6 +21,7 @@ const Input = ({
   error,
   onChange,
   onBlur,
+  isPassword,
 }: InputProps) => {
   return (
     <input
@@ -30,7 +32,7 @@ const Input = ({
       name={name}
       onChange={onChange}
       onBlur={onBlur}
-      className={`w-full border ${error ? "border-error-light" : "border-border-grey"}  rounded-md p-2.5 h-10 text-base`}
+      className={`w-full pointer-events-auto ${isPassword ? "focus:outline-none" : "border"} ${!isPassword && error ? "border-error-light" : "border-border-grey"}  rounded-md p-2.5 h-10 text-base`}
     />
   );
 };

@@ -1,3 +1,5 @@
+import { delay } from "./helpers";
+
 const originalFetch = window.fetch;
 
 // Mock data
@@ -10,6 +12,8 @@ const mockInfo = [
 window.fetch = async (input: RequestInfo | URL, options = {}) => {
   const { method, body } = options as RequestInit;
   const url = typeof input === "string" ? input : (input as Request).url;
+
+  await delay(1000 + Math.random() * 1000);
 
   // Mock login api
   if (url.includes("/api/login") && method === "POST") {

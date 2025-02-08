@@ -13,6 +13,8 @@ import { login } from "../api/authentication";
 import { useNavigate } from "react-router";
 
 const LoginForm = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [animate, setAnimate] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
@@ -38,6 +40,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const newErrors = {
       ...errors,
@@ -45,9 +48,11 @@ const LoginForm = () => {
       password: validateLoginPassword(formData.password),
     };
 
-    setErrors(newErrors);
-
     if (newErrors.email || newErrors.password) {
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 1000);
+      setLoading(false);
+      setErrors(newErrors);
       return;
     }
 
@@ -63,6 +68,7 @@ const LoginForm = () => {
         setErrors({ ...errors, password: "An unknown error occurred" });
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -71,7 +77,9 @@ const LoginForm = () => {
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-2">
           {/* Input Group */}
-          <Label text="Email" htmlFor="email" />
+          <div className="flex w-full">
+            <Label text="Email" htmlFor="email" />
+          </div>
           <Input
             placeholder="m@example.com"
             type="email"
@@ -83,17 +91,21 @@ const LoginForm = () => {
             }
             onBlur={() => handleBlur("email")}
             error={!!errors.email}
+            isPassword={false}
           />
           {errors.email && <ErrorMessage message={errors.email} />}
         </div>
         <div className="flex flex-col gap-2">
           {/* Input Group */}
           <div className="flex justify-between gap-4">
-            <Label text="Password" htmlFor="password" />
+            <div className="flex w-full">
+              <Label text="Password" htmlFor="password" />
+            </div>
             <RedirectText
               text="Forgot my password?"
               to="/reset"
               underline={false}
+              alignRight={true}
             />
           </div>
           <Input
@@ -107,12 +119,20 @@ const LoginForm = () => {
             }
             onBlur={() => handleBlur("password")}
             error={!!errors.password}
+            isPassword={false}
           />
           {errors.password && <ErrorMessage message={errors.password} />}
         </div>
       </div>
 
-      <Button text="Login" type="submit" enable={true} />
+      <Button
+        text="Login"
+        type="submit"
+        enable={true}
+        loading={loading}
+        loadingText="Logging In"
+        shake={animate}
+      />
     </form>
   );
 };

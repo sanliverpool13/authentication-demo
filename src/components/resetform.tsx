@@ -11,18 +11,23 @@ import { useNavigate } from "react-router";
 
 const ResetForm = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [animate, setAnimate] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     // Check for errors
     const newError = validateLoginEmail(email);
 
-    setError(newError);
-
     if (newError.length > 0) {
+      setAnimate(true);
+      setTimeout(() => setAnimate(false), 1000);
+      setLoading(false);
+      setError(newError);
       return;
     }
 
@@ -51,14 +56,27 @@ const ResetForm = () => {
           error={!!error}
           onChange={(e) => setEmail(e.target.value)}
           onBlur={() => {}}
+          isPassword={false}
         />
         {error && <ErrorMessage message={error} />}
       </div>
 
-      <Button text="Continue" type="submit" enable={true} />
+      <Button
+        text="Continue"
+        type="submit"
+        enable={true}
+        loading={loading}
+        loadingText="Setting Up Reset"
+        shake={animate}
+      />
 
       <div className="flex justify-center items-center">
-        <RedirectText text="Return to login" to="/" underline />
+        <RedirectText
+          text="Return to login"
+          to="/"
+          underline
+          alignRight={false}
+        />
       </div>
 
       <AuthRedirect
